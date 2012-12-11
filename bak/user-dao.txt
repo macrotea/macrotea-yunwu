@@ -1,0 +1,51 @@
+  
+	public int addUser(User user) {
+		//Bean中属性与列名映射，忽略大小写
+		SqlParameterSource parameters = new BeanPropertySqlParameterSource(user);
+        //插入且生成主键
+        Number newId = insertActor.executeAndReturnKey(parameters);
+        //更新对象中的Id值
+        user.setId(newId.longValue());
+        return newId.intValue();
+	}
+
+	public int deleleUser(int id) {
+		return this.jdbcTemplate.update("DELETE FROM tb_user WHERE AutoId=?",id);
+	}
+	public int deleleAll() {
+		return this.jdbcTemplate.update("DELETE FROM tb_user");
+	}
+
+	public User findById(int id) {
+		return this.jdbcTemplate.queryForObject("SELECT * FROM tb_user WHERE AutoID=?", new Object[]{id}, new UserRowMapper());
+	}
+	
+	public List<User> findAll() {
+		return this.jdbcTemplate.query("SELECT * FROM tb_user",new UserRowMapper());
+	}
+
+	public int updateUserById(User user) {
+		return this.jdbcTemplate.update("UPDATE tb_user SET Username = ?, Password = ?,Age = ?,Email = ?,Birthday = ? WHERE AutoID = ?;",
+				user.getUsername(),
+				user.getPassword(),
+				user.getAge(),
+				user.getEmail(),
+				user.getBirthday(),
+				user.getId());
+	}
+	
+	public int[] batchUpdateUserBirthdayToNow(final List<User> userList) {
+		//方式1
+		int[] updateCounts = jdbcTemplate.batchUpdate("UPDATE tb_user SET Birthday = ? WHERE AutoID = ?;", new BatchPreparedStatementSetter() {
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				//Date类型转换
+				ps.setDate(1, new java.sql.Date(new java.util.Date().getTime()));
+				ps.setInt(2, userList.get(i).getId());
+			}
+
+			public int getBatchSize() {
+				return userList.size();
+			}
+		});
+		return updateCounts;
+	}
