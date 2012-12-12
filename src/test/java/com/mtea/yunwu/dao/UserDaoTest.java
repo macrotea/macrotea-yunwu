@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mtea.yunwu.model.core.User;
 import com.mtea.yunwu.test.AbstractTestCase;
+import com.mtea.yunwu.utils.Pager;
 
 /**
  * UserDao测试类
@@ -101,13 +102,38 @@ public class UserDaoTest extends AbstractTestCase {
 			userDao.save(u);
 		}
 	}
+	
+	@Test
+	public void findPage() {
+		User criteria = mockUserCriteria();
+		Pager<User> pager = userDao.findPage(1, criteria);
+		
+		System.out.println(pager.toString());
+		List<User> dataList = pager.getDataList();
+		
+		Assert.assertTrue(Pager.DEFAULT_PAGE_SIZE >= dataList.size());
+		
+	}
+
+	/**
+	 * 模拟用户查询条件
+	 * @return
+	 * @author liangqiye
+	 * @date 2012-12-12上午9:16:45
+	 */
+	private User mockUserCriteria() {
+		User criteria = new User();
+		criteria.setUsername("ma");
+		criteria.setEmail("ma");
+		criteria.setEnable(true);
+		return criteria;
+	}
 
 	/**
 	 * 模拟用户
-	 * 
-	 * @author macrotea@qq.com
-	 * @date 2012-11-30 下午9:33:14
 	 * @return
+	 * @author liangqiye
+	 * @date 2012-12-12上午9:16:35
 	 */
 	private User mockUser() {
 		int r = new Random().nextInt(10);

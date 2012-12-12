@@ -40,7 +40,8 @@
 	</bean>
 	
 	<!--配置引入-->
+	<!--
 	<beans:import resource="dataSourceContext.xml" />
 	<beans:import resource="servletContext.xml" />
-	
+	-->
 </beans>

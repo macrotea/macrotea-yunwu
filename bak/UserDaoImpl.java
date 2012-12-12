@@ -17,6 +17,7 @@ import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import com.mtea.yunwu.dao.BaseDao;
 import com.mtea.yunwu.dao.UserDao;
 import com.mtea.yunwu.dao.exception.DaoException;
 import com.mtea.yunwu.dao.sql.SqlBuilder;
@@ -33,7 +34,7 @@ import com.mtea.yunwu.utils.Pager;
  * @note
  */
 @Repository
-public class UserDaoImpl implements UserDao {
+public class UserDaoImpl extends BaseDao<User> implements UserDao {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
@@ -141,7 +142,6 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public Pager<User> findPage(int page, final User user) {
 		
-		/*
 		super.findPage(page,new WhereBuilder() {
 			
 			@Override
@@ -168,7 +168,6 @@ public class UserDaoImpl implements UserDao {
 					
 			}
 		});
-		*/
 		
 		String countSql = String.format("SELECT COUNT(*) FROM %s WHERE 1=1", tableName);
 		String querySql = String.format("SELECT * FROM %s WHERE 1=1", tableName);

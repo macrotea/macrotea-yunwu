@@ -5,7 +5,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = "classpath:applicationContext.xml")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml","classpath:dataSourceContext.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 //@Transactional
 //@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)

@@ -14,7 +14,7 @@ import com.mtea.yunwu.model.core.BaseModel;
  */
 public final class Pager<T extends BaseModel> implements Serializable {
 	
-	public static int DEFAULT_PAGESIZE = 10;
+	public static int DEFAULT_PAGE_SIZE = 10;
 
 	private static final long serialVersionUID = -7742988063989166270L;
 	
@@ -47,7 +47,7 @@ public final class Pager<T extends BaseModel> implements Serializable {
     public Pager() {}
 
     public Pager(List<T> dataList,long rowCount,int currentPage) {
-    	this(dataList,rowCount,DEFAULT_PAGESIZE,currentPage);
+    	this(dataList,rowCount,DEFAULT_PAGE_SIZE,currentPage);
     }
     
     public Pager(List<T> dataList,long rowCount,int pageSize,int currentPage) {
