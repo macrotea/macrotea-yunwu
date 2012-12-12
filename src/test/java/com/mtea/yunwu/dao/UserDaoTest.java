@@ -108,7 +108,6 @@ public class UserDaoTest extends AbstractTestCase {
 		User criteria = mockUserCriteria();
 		Pager<User> pager = userDao.findPage(1, criteria);
 		
-		System.out.println(pager.toString());
 		List<User> dataList = pager.getDataList();
 		
 		Assert.assertTrue(Pager.DEFAULT_PAGE_SIZE >= dataList.size());

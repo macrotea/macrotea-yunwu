@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -49,20 +48,14 @@ public class UserDaoImpl implements UserDao {
 	private ParameterizedBeanPropertyRowMapper<User> mapper;
 	
 	private String tableName;
-	
+
 	@PostConstruct
 	public void init() {
 		this.mapper = ParameterizedBeanPropertyRowMapper.newInstance(User.class);
 		this.modelInspector = ModelInspector.forClazz(User.class);
 		this.sqlBuilder = SqlBuilder.use(this.modelInspector);
 		this.tableName = modelInspector.getTableName();
-		
-		DataSource dataSource =jdbcTemplate.getDataSource();
-        //设定表名,插入列,自动生成Id的列名
-        this.insertActor = new SimpleJdbcInsert(dataSource)
-        	.withTableName(modelInspector.getTableName())
-        	.usingColumns(modelInspector.getCommonColumns())
-        	.usingGeneratedKeyColumns(modelInspector.getPKColumn());
+		this.insertActor = new SimpleJdbcInsert(jdbcTemplate.getDataSource()).withTableName(modelInspector.getTableName()).usingColumns(modelInspector.getCommonColumns()).usingGeneratedKeyColumns(modelInspector.getPKColumn());
 	}
 
 	/* (non-Javadoc)
@@ -202,5 +195,5 @@ public class UserDaoImpl implements UserDao {
 		List<User> userList = this.jdbcTemplate.query(querySql + whereSql + limitSql, mapper, args);
 		return new Pager<User>(userList, rowCount, page);
 	}
-
+	
 }

@@ -4,9 +4,18 @@
 
 	<include resource="logback.inc.xml" />
 	
-	<logger name="*" level="DEBUG"/>
+	<logger name="*" level="TRACE"/>
 	
-	<root level="DEBUG">
+	<!-- log4jdbc -->
+	<logger name="jdbc.sqltiming" level="INFO"/>
+	<logger name="jdbc.resultset" level="OFF"/>
+	<logger name="jdbc.resultsettable" level="OFF"/>
+	<logger name="log4jdbc.debug" level="OFF"/>
+	<logger name="jdbc.audit" level="OFF"/>
+	<logger name="jdbc.sqlonly" level="OFF"/>
+	<logger name="jdbc.connection" level="OFF"/>
+	
+	<root level="TRACE">
 		<appender-ref ref="ConsoleOutputAppender" />
 		<appender-ref ref="ProjectLogFileAppender" />
 	</root>
