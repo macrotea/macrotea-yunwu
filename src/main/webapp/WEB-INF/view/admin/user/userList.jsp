@@ -24,7 +24,7 @@
 				<legend>用户列表</legend>
 				
 				<%--搜索框 --%>
-			    <form id="userSearchForm" class="form-inline" action="search" method="post" >
+			    <form id="userSearchForm" class="form-inline" action="<%=ctxPath %>${searchAction }" method="post" >
 				    <input id="username" name ="username" type="text" class="input-small" placeholder="Username" value="${user.username}" AUTOCOMPLETE="off" />
 				    &nbsp;
 				    <input id="email"  name ="email" type="text" class="input-small" placeholder="Email" value="${user.email}" AUTOCOMPLETE="off" />
@@ -65,7 +65,7 @@
 		                  <td>    
 							    <div class="btn-group">
 								    <a class="btn" href="<%=basePath%>admin/user/edit/${u.id}"><i class="icon-edit"></i></a>
-								    <a class="btn" href="<%=basePath%>admin/user/delete/${u.id}"><i class="icon-remove"></i></a>
+								    <a class="btn" href="<%=basePath%>admin/user/delete/${u.id}/${pager.currentPage}${criteriaText}"><i class="icon-remove"></i></a>
 							    </div>
     					  </td> 
 		                </tr>
@@ -76,13 +76,11 @@
     			<%--分页 --%>
 				<div class="pagination pagination-centered">
 	              <ul>
-	                <li><a href="#">?</a></li>
-	                <li><a href="#">1</a></li>
-	                <li><a href="#">2</a></li>
-	                <li><a href="#">3</a></li>
-	                <li><a href="#">4</a></li>
-	                <li><a href="#">5</a></li>
-	                <li><a href="#">?</a></li>
+	                <li${pager.hasPrev?'':' class="disabled"'}><a href="<%=basePath%>${pageAction}/${pager.prevPage}${criteriaText}">&lt;</a></li>
+				    <c:forEach var="i" begin="1" end="${pager.totalPage}" step="1">
+						<li${pager.currentPage!=i ? '' : ' class="active"'}><a href="<%=basePath%>${pageAction}/${i}${criteriaText}">${i}</a></li>
+				    </c:forEach>
+	                <li${pager.hasNext?'':' class="disabled"'}><a href="<%=basePath%>${pageAction}/${pager.nextPage}${criteriaText}">&gt;</a></li>
 	              </ul>
 				  <h5>${actionTip}</h5>
 	            </div>

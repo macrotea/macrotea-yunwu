@@ -6,7 +6,6 @@ package com.mtea.yunwu.dao.sql;
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -17,7 +16,6 @@ import com.mtea.yunwu.model.core.BaseModel;
 import com.mtea.yunwu.model.ext.SqlArgsBean;
 import com.mtea.yunwu.utils.ModelInspector;
 import com.mtea.yunwu.utils.ReflectUtils;
-
 
 /**
  * SQL构建器
@@ -38,7 +36,7 @@ public class SqlBuilder {
 	}
 
 	/**
-	 * 语义化实例
+	 * 语义化构造实例
 	 * @author macrotea@qq.com
 	 * @date 2012-11-30 下午8:08:54
 	 * @param modelInspector
@@ -75,7 +73,7 @@ public class SqlBuilder {
 	 * @return
 	 */
 	public String toFindAllSql() {
-		return String.format("SELECT * FROM %s", modelInspector.getTableName());
+		return String.format("SELECT * FROM %s WHERE 1=1", modelInspector.getTableName());
 	}
 
 	/**
@@ -123,8 +121,8 @@ public class SqlBuilder {
 		argsList.add(ReflectUtils.getProperty(model, modelInspector.getPKColumn()));
 		
 		String sql = builder.toString();
-		logger.debug("update sql : "+ sql);
-		logger.debug("update sql argsList: "+ (argsList));
+		logger.trace("createUpdateSqlArgsBean() - update sql : "+ sql);
+		logger.trace("createUpdateSqlArgsBean() - update sql argsList: "+ (argsList));
 		return new SqlArgsBean(sql,argsList);
 	}
 
@@ -135,7 +133,7 @@ public class SqlBuilder {
 	 * @return
 	 */
 	public String toCountAllSql() {
-		return String.format("SELECT COUNT(*) FROM %s", modelInspector.getTableName());
+		return String.format("SELECT COUNT(*) FROM %s WHERE 1=1", modelInspector.getTableName());
 	}
 
 	/**
@@ -164,8 +162,7 @@ public class SqlBuilder {
 		//拼接WHERE id = :id
 		builder.append(Constants.BLANK).append("WHERE").append(Constants.BLANK).append(modelInspector.getPKColumn()).append("=:").append(modelInspector.getPKColumn());
 		
-		String sql = builder.toString();
-		return sql;
+		return builder.toString();
 	}
 
 }

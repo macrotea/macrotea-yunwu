@@ -1,5 +1,6 @@
 package com.mtea.yunwu.web.controller;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +28,9 @@ import com.mtea.yunwu.web.common.BaseController;
 @Controller
 @RequestMapping("/admin/user")
 public class UserController extends BaseController { // http://localhost:8080/yunwu/admin/user/edit.do
+	
+	//删除跳转的问题
+	//basePath和ctxPath问题
 
 	public UserController() {
 		super(User.class, "用户", true);
@@ -46,20 +50,56 @@ public class UserController extends BaseController { // http://localhost:8080/yu
 	}
 
 	@RequestMapping("list")
-	public ModelAndView list() {
-		ModelAndView mav=new ModelAndView();
+	public ModelAndView list(@ModelAttribute User criteria) {
+		criteria.reset();
+		ModelAndView mav = new ModelAndView();
 		mav.setViewName(bindListView());
-		mav.addObject("userList", userService.getAllUser());
+		Pager<User> pager = userService.searchPage(1, criteria);
+		mav.addObject("pager", pager);
+		mav.addObject("userList", pager.getDataList());
+		mav.addObject(KEY_SEARCH_ACTION, bindSearchActionURL());
+		mav.addObject(KEY_PAGE_ACTION, bindListActionURL());
 		return mav;
 	}
 	
-	@RequestMapping(value = "search", method = RequestMethod.POST)
-	public ModelAndView search(@ModelAttribute User user) {
+	@RequestMapping("list/{page}")
+	public ModelAndView list(@PathVariable("page") Integer page ,@ModelAttribute User criteria) {
+		criteria.reset();
+		page=checkPage(page);
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(bindListView());
-		Pager<User> pager = userService.searchPage(1, user);
-		mav.addObject("userList", pager.getDataList());
+		Pager<User> pager = userService.searchPage(page == null ? 1 : page, criteria);
 		mav.addObject("pager", pager);
+		mav.addObject("userList", pager.getDataList());
+		mav.addObject(KEY_SEARCH_ACTION, bindSearchActionURL());
+		mav.addObject(KEY_PAGE_ACTION, bindListActionURL());
+		return mav;
+	}
+
+	@RequestMapping("search")
+	public ModelAndView search(@ModelAttribute User criteria) {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName(bindListView());
+		Pager<User> pager = userService.searchPage(1, criteria);
+		mav.addObject("pager", pager);
+		mav.addObject("userList", pager.getDataList());
+		mav.addObject(KEY_CRITERIA_TEXT, buildCriteriaText(criteria));
+		mav.addObject(KEY_SEARCH_ACTION, bindSearchActionURL());
+		mav.addObject(KEY_PAGE_ACTION, bindSearchActionURL());
+		return mav;
+	}
+	
+	@RequestMapping("search/{page}")
+	public ModelAndView search(@PathVariable("page") Integer page , @ModelAttribute User criteria ) {
+		page=checkPage(page);
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName(bindListView());
+		Pager<User> pager = userService.searchPage(page == null ? 1 : page, criteria);
+		mav.addObject("pager", pager);
+		mav.addObject("userList", pager.getDataList());
+		mav.addObject(KEY_CRITERIA_TEXT, buildCriteriaText(criteria));
+		mav.addObject(KEY_SEARCH_ACTION, bindSearchActionURL());
+		mav.addObject(KEY_PAGE_ACTION, bindSearchActionURL());
 		return mav;
 	}
 
@@ -125,7 +165,6 @@ public class UserController extends BaseController { // http://localhost:8080/yu
 		model.addAttribute(KEY_ACTION_TIP, buildActionTip(ret > 0, ACTION_DELETE));
 		return forwardList();
 	}
-	
 
 	/*
 	 * 临时
@@ -148,6 +187,30 @@ public class UserController extends BaseController { // http://localhost:8080/yu
 		System.out.println("isAdmin >> "+ isAdmin);
 		System.out.println("isMan >> "+ isMan);
 		return "/admin/user/test";
+	}
+	
+	/**
+	 * 构建查询条件
+	 * @author macrotea@qq.com
+	 * @date 2012-12-13 上午12:02:09
+	 * @param criteria
+	 * @return
+	 */
+	private String buildCriteriaText(User criteria){
+		StringBuilder builder =new StringBuilder();
+		if(criteria!=null){
+			if (StringUtils.isNotBlank(criteria.getUsername())) {
+				toggleConnectorChar(builder);
+				builder.append("username=" + criteria.getUsername());
+			}
+			if(StringUtils.isNotBlank(criteria.getEmail())){
+				toggleConnectorChar(builder);
+				builder.append("email="+criteria.getEmail());
+			}
+			toggleConnectorChar(builder);
+			builder.append("enable="+criteria.isEnable());
+		}
+		return builder.toString();
 	}
 
 }

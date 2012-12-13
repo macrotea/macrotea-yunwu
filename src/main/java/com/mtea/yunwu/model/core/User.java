@@ -75,8 +75,8 @@ public class User extends BaseModel implements Serializable {
 	 * @return
 	 */
 	public User reset() {
-		setEnable(false);
-		setAdmin(false);
+		setEnable(true);
+		setAdmin(true);
 		return this;
 	}
 	

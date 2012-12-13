@@ -27,12 +27,17 @@ public class BaseController {
 	
 	/*模型的键*/
 	protected static final String KEY_ACTION = "action";
+	protected static final String KEY_PAGE_ACTION = "pageAction";
+	protected static final String KEY_SEARCH_ACTION = "searchAction";
 	protected static final String KEY_ACTION_TIP = "actionTip";
 	protected static final String KEY_FLAG = "flag";
 	protected static final String KEY_CREATE = "create";
 	protected static final String KEY_EDIT = "edit";
+	protected static final String KEY_LIST = "list";
+	protected static final String KEY_SEARCH = "search";
 	protected static final String KEY_DOMANNAME = "domainName";
 	protected static final String KEY_ACTION_NAME = "actionName";
+	protected static final String KEY_CRITERIA_TEXT = "criteriaText";
 	
 	/*动作类型*/
 	protected static final int ACTION_DELETE = 0;
@@ -242,6 +247,20 @@ public class BaseController {
 	protected String bindEditAction(Object... param){
 		return bindAction(KEY_EDIT,param);
 	}
+	/**
+	 * 绑定列表动作
+	 * @return
+	 */
+	protected String bindListActionURL(){
+		return bindAction(KEY_LIST);
+	}
+	/**
+	 * 绑定搜索动作
+	 * @return
+	 */
+	protected String bindSearchActionURL(){
+		return bindAction(KEY_SEARCH);
+	}
 	
 	/*
 	 * 扩展
@@ -292,6 +311,33 @@ public class BaseController {
 	}
 	protected void setDomainName(String domainName) {
 		this.domainName = domainName;
+	}
+	
+	/**
+	 * 切换连接符
+	 * @author macrotea@qq.com
+	 * @date 2012-12-13 上午12:09:37
+	 * @param builder
+	 */
+	public void toggleConnectorChar(StringBuilder builder) {
+		if(builder.length()==0){
+			builder.append("?");
+		}else{
+			builder.append("&");
+		}
+	}
+	
+	/**
+	 * 检查页码
+	 * @author macrotea@qq.com
+	 * @date 2012-12-13 上午12:09:37
+	 * @param builder
+	 */
+	public int checkPage(Integer page) {
+		if (page ==null || page <= 0) {
+			page = 1;
+		}
+		return page;
 	}
 
 }

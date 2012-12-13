@@ -141,12 +141,20 @@ public final class Pager<T extends BaseModel> implements Serializable {
 	public boolean isHasNext() {
 		return hasNext;
 	}
+	
+	public boolean getHasNext() {
+		return hasNext;
+	}
 
 	public void setHasNext(boolean hasNext) {
 		this.hasNext = hasNext;
 	}
 
 	public boolean isHasPrev() {
+		return hasPrev;
+	}
+	
+	public boolean getHasPrev() {
 		return hasPrev;
 	}
 
@@ -157,12 +165,20 @@ public final class Pager<T extends BaseModel> implements Serializable {
 	public boolean isHasFirst() {
 		return hasFirst;
 	}
+	
+	public boolean getHasFirst() {
+		return hasFirst;
+	}
 
 	public void setHasFirst(boolean hasFirst) {
 		this.hasFirst = hasFirst;
 	}
 
 	public boolean isHasLast() {
+		return hasLast;
+	}
+	
+	public boolean getHasLast() {
 		return hasLast;
 	}
 
