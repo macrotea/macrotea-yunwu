@@ -1,6 +1,7 @@
 package com.mtea.yunwu.utils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.mtea.yunwu.model.core.BaseModel;
@@ -14,9 +15,19 @@ import com.mtea.yunwu.model.core.BaseModel;
  */
 public final class Pager<T extends BaseModel> implements Serializable {
 	
-	public static int DEFAULT_PAGE_SIZE = 10;
-
 	private static final long serialVersionUID = -7742988063989166270L;
+	
+	//默认页大小
+	public static int DEFAULT_PAGE_SIZE = 10;
+	
+	// 页码索引限制为5个
+	private static int DEFALT_DIPSLAY_LIMIT = 10;
+
+	// 前导限制
+	private static int DEFALT_PREV_LIMIT = 4;
+
+	// 后续限制
+	private static int DEFALT_NEXT_LIMIT = DEFALT_DIPSLAY_LIMIT - DEFALT_PREV_LIMIT;
 	
 	private int firstPage;
     
@@ -43,6 +54,9 @@ public final class Pager<T extends BaseModel> implements Serializable {
     private boolean hasLast;
     
     private List<T> dataList;
+    
+	//页码索引集合
+	private List<Integer> indexList;
     
     public Pager() {}
 
@@ -72,6 +86,35 @@ public final class Pager<T extends BaseModel> implements Serializable {
             this.hasLast = true;   
             this.lastPage = new Long(this.totalPage).intValue();
         }
+        
+		/* handle indexList */
+		indexList = new ArrayList<Integer>();
+		if (this.totalPage >= this.currentPage && currentPage >= DEFALT_DIPSLAY_LIMIT) {
+			// 处理中间情况:前2后3
+			for (int i = currentPage - DEFALT_PREV_LIMIT; i < currentPage; i++) {
+				indexList.add(i);
+			}
+			// 处理尾部情况
+			if (totalPage - currentPage >= DEFALT_NEXT_LIMIT) {
+				for (int i = currentPage; i <= currentPage + DEFALT_NEXT_LIMIT; i++) {
+					indexList.add(i);
+				}
+			} else {
+				for (int i = currentPage; i <= totalPage; i++) {
+					indexList.add(i);
+				}
+			}
+		} else {
+			if (this.totalPage >= DEFALT_DIPSLAY_LIMIT) {
+				for (int i = 1; i <= DEFALT_DIPSLAY_LIMIT; i++) {
+					indexList.add(i);
+				}
+			} else {
+				for (int i = 1; i <= totalPage; i++) {
+					indexList.add(i);
+				}
+			}
+		}
     }
 
 	public int getFirstPage() {
@@ -192,6 +235,10 @@ public final class Pager<T extends BaseModel> implements Serializable {
 
 	public void setDataList(List<T> dataList) {
 		this.dataList = dataList;
+	}
+
+	public List<Integer> getIndexList() {
+		return indexList;
 	}
 
 	@Override

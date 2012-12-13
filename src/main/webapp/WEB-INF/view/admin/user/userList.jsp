@@ -3,7 +3,6 @@
 <%
 	String path = request.getContextPath();
 	String ctxPath = request.getContextPath() + "/";
-	String basePath = request.getScheme() + "://"+ request.getServerName() + ":" + request.getServerPort()+ path  + "/";
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,6 +34,12 @@
 				    &nbsp;
 				    <button type="submit" class="btn">搜索</button>
 			    </form>
+			    <c:if test="${!(null eq actionTip) }">    
+				 <div class="alert">
+              	 	<button data-dismiss="alert" class="close" type="button">×</button>
+              		${actionTip}
+            	 </div>
+            	</c:if>
 			    
 				<%--数据列表 --%>
 				<table class="table table-hover">
@@ -64,8 +69,8 @@
 		                  <td>${u.editTime}</td>
 		                  <td>    
 							    <div class="btn-group">
-								    <a class="btn" href="<%=basePath%>admin/user/edit/${u.id}"><i class="icon-edit"></i></a>
-								    <a class="btn" href="<%=basePath%>admin/user/delete/${u.id}/${pager.currentPage}${criteriaText}"><i class="icon-remove"></i></a>
+								    <a class="btn" href="<%=ctxPath%>admin/user/edit/${u.id}"><i class="icon-edit"></i></a>
+								    <a class="btn" href="<%=ctxPath%>admin/user/delete/${u.id}/${pager.currentPage}${criteria}"><i class="icon-remove"></i></a>
 							    </div>
     					  </td> 
 		                </tr>
@@ -76,13 +81,12 @@
     			<%--分页 --%>
 				<div class="pagination pagination-centered">
 	              <ul>
-	                <li${pager.hasPrev?'':' class="disabled"'}><a href="<%=basePath%>${pageAction}/${pager.prevPage}${criteriaText}">&lt;</a></li>
-				    <c:forEach var="i" begin="1" end="${pager.totalPage}" step="1">
-						<li${pager.currentPage!=i ? '' : ' class="active"'}><a href="<%=basePath%>${pageAction}/${i}${criteriaText}">${i}</a></li>
+	                <li${pager.hasPrev?'':' class="disabled"'}><a href="<%=ctxPath%>${pageAction}/${pager.prevPage}${criteria}">&lt;</a></li>
+					<c:forEach var="i" items="${pager.indexList}">
+						<li${pager.currentPage!=i ? '' : ' class="active"'}><a href="<%=ctxPath%>${pageAction}/${i}${criteria}">${i}</a></li>
 				    </c:forEach>
-	                <li${pager.hasNext?'':' class="disabled"'}><a href="<%=basePath%>${pageAction}/${pager.nextPage}${criteriaText}">&gt;</a></li>
+	                <li${pager.hasNext?'':' class="disabled"'}><a href="<%=ctxPath%>${pageAction}/${pager.nextPage}${criteria}">&gt;</a></li>
 	              </ul>
-				  <h5>${actionTip}</h5>
 	            </div>
 			</fieldset>
 			

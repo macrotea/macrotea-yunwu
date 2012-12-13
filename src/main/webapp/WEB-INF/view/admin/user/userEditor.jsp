@@ -2,7 +2,6 @@
 <%
 	String path = request.getContextPath();
 	String ctxPath = request.getContextPath() + "/";
-	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -29,7 +28,7 @@
 			<div class="span10 well">
 				<form name="userForm" method="post" action="<%=ctxPath %>${action}" class="form">
 					<fieldset>
-						<legend>新增用户</legend>
+						<legend>${actionName}用户</legend>
 						<label>用户名</label> 
 						<input id="username" name="username" type="text" placeholder="Username" value="${user.username}" AUTOCOMPLETE="off"/> 
 						
@@ -43,10 +42,8 @@
 						<div class="form-actions">
 							<button type="submit" class="btn btn-primary">保存</button>
 							<button type="reset" class="btn">清空</button>
+							<h5>${actionTip}</h5>
 						</div>
-						
-						<h5>${actionTip}</h5>
-						
 					</fieldset>
 				</form>
 			</div>

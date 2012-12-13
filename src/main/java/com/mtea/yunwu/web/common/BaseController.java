@@ -26,24 +26,33 @@ public class BaseController {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	/*模型的键*/
-	protected static final String KEY_ACTION = "action";
-	protected static final String KEY_PAGE_ACTION = "pageAction";
-	protected static final String KEY_SEARCH_ACTION = "searchAction";
-	protected static final String KEY_ACTION_TIP = "actionTip";
 	protected static final String KEY_FLAG = "flag";
 	protected static final String KEY_CREATE = "create";
 	protected static final String KEY_EDIT = "edit";
 	protected static final String KEY_LIST = "list";
 	protected static final String KEY_SEARCH = "search";
-	protected static final String KEY_DOMANNAME = "domainName";
-	protected static final String KEY_ACTION_NAME = "actionName";
-	protected static final String KEY_CRITERIA_TEXT = "criteriaText";
+	protected static final String KEY_CRITERIA = "criteria";
+	protected static final String KEY_PAGER = "pager";
 	
-	/*动作类型*/
-	protected static final int ACTION_DELETE = 0;
-	protected static final int ACTION_CREATE = 1;
-	protected static final int ACTION_EDIT = 2;
-	protected static final int ACTION_VIEW = 3;
+	protected static final String KEY_ACTION_URL = "action";
+	protected static final String KEY_ACTION_TIP = "actionTip";
+	
+	protected static final String KEY_PAGE_ACTION = "pageAction";
+	protected static final String KEY_SEARCH_ACTION = "searchAction";
+	
+	protected static final String KEY_DOMAIN_NAME = "domainName";
+	protected static final String KEY_ACTION_NAME = "actionName";
+	
+	/*动作提示类型*/
+	protected static final int ACTION_VIEW = 0;
+	protected static final int ACTION_TIP_CREATE = 1;
+	protected static final int ACTION_TIP_EDIT = 2;
+	protected static final int ACTION_TIP_DELETE = 3;
+	
+	/*动作名字*/
+	protected static final String ACTION_NAME_CREATE = "新增";
+	protected static final String ACTION_NAME_EDIT = "编辑";
+	protected static final String ACTION_NAME_DELETE = "删除";
 	
 	/**
 	 * 领域名
@@ -68,28 +77,43 @@ public class BaseController {
 	protected String urlSeparator = "/";
 	
 	/**
-	 * 错误视图路径
+	 * 500 错误视图路径
 	 */
-	protected String ERROR_VIEW_PATH = "/publics/error";
-
+	protected String SERVER_ERROR_VIEW_PATH = isAdmin ? "/admin/publics/500" :"/publics/500";
 	
 	/**
-	 * 异常统一处理
+	 * 404 错误视图路径
+	 */
+	protected String RES_NOT_FOUND_VIEW_PATH = isAdmin ? "/admin/publics/404" :"/publics/404";
+
+	/**
+	 * 处理 500 错误
 	 * @param ex
 	 * @return
 	 */
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(Exception.class)
-	public ModelAndView handleException(Exception ex) {
+	public ModelAndView handleServerError(Exception ex) {
 		ModelMap model = new ModelMap();
-		model.addAttribute("underlyingExceptionClazz", ClassUtils.getShortName(ex.getClass()));
+		model.addAttribute("exceptionClazz", ClassUtils.getShortName(ex.getClass()));
 		model.addAttribute("exceptionMessage", ex.getMessage());
 		model.addAttribute("controllerClazz", ClassUtils.getShortName(getClass()));
-		return new ModelAndView(ERROR_VIEW_PATH, model);
+		return new ModelAndView(SERVER_ERROR_VIEW_PATH, model);
 	}
 	
 	/**
-	 * 生成动作提示
+	 * 处理 404
+	 * @param ex
+	 * @return
+	 */
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	@ExceptionHandler(Exception.class)
+	public ModelAndView handleResNotFound(Exception ex) {
+		return new ModelAndView(RES_NOT_FOUND_VIEW_PATH);
+	}
+	
+	/**
+	 * 构建动作操作完成提示信息
 	 * @param flag
 	 * @param actionType
 	 * @return
@@ -97,14 +121,14 @@ public class BaseController {
 	protected String buildActionTip(boolean flag, int actionType) {
 		String actionDesc = null;
 		switch (actionType) {
-			case ACTION_DELETE:
-				actionDesc = "删除";
+			case ACTION_TIP_DELETE:
+				actionDesc = ACTION_NAME_DELETE;
 				break;
-			case ACTION_CREATE:
-				actionDesc = "新增";
+			case ACTION_TIP_CREATE:
+				actionDesc = ACTION_NAME_CREATE;
 				break;
-			case ACTION_EDIT:
-				actionDesc = "编辑";
+			case ACTION_TIP_EDIT:
+				actionDesc = ACTION_NAME_EDIT;
 				break;
 			case ACTION_VIEW:
 				actionDesc = "查看";
@@ -146,7 +170,7 @@ public class BaseController {
 	 * @return
 	 */
 	protected String forward(String action){
-		if(action==null||action.trim().length()==0) throw new IllegalArgumentException("动作名不能为空");
+		if (StringUtils.isBlank(action)) throw new IllegalArgumentException("动作名不能为空");
 		String clazzName = StringUtils.uncapitalize(domainClazz.getSimpleName());
 		String mappingPath = isAdmin ? "forward:/admin/%s/%s" : "forward:/%s/%s";
 		return String.format(mappingPath, clazzName,action);
@@ -209,6 +233,22 @@ public class BaseController {
 		return forward("list");
 	}
 	
+	/**
+	 * 转发到普通列表特定分页
+	 * @return
+	 */
+	protected String forwardPageOfList(int page) {
+		return forward("list") + "/" + page;
+	}
+	
+	/**
+	 * 转发到搜索列表特定分页
+	 * @return
+	 */
+	protected String forwardPageOfSearch(int page) {
+		return forward("search") + "/" + page;
+	}
+	
 	/*
 	 * 视图绑定
 	 *------------------------------------------------------------------------------*/
@@ -230,47 +270,36 @@ public class BaseController {
 	}
 	
 	/*
-	 * 动作绑定
+	 * 动作URL
 	 *------------------------------------------------------------------------------*/
 	
 	/**
-	 * 绑定创建动作
+	 * 创建动作URL
 	 * @return
 	 */
-	protected String bindCreateActionURL(){
+	protected String toCreateActionUrl(){
 		return bindAction(KEY_CREATE);
 	}
 	/**
-	 * 绑定编辑动作
+	 * 编辑动作URL
 	 * @return
 	 */
-	protected String bindEditAction(Object... param){
+	protected String toEditActionUrl(Object... param){
 		return bindAction(KEY_EDIT,param);
 	}
 	/**
-	 * 绑定列表动作
+	 * 列表动作URL
 	 * @return
 	 */
-	protected String bindListActionURL(){
+	protected String toListActionUrl(){
 		return bindAction(KEY_LIST);
 	}
 	/**
-	 * 绑定搜索动作
+	 * 搜索动作URL
 	 * @return
 	 */
-	protected String bindSearchActionURL(){
+	protected String toSearchActionUrl(){
 		return bindAction(KEY_SEARCH);
-	}
-	
-	/*
-	 * 扩展
-	 *------------------------------------------------------------------------------*/
-	
-	protected void traceBindingResult(BindingResult result) {
-		List<FieldError> fieldErrorList=result.getFieldErrors();
-		for (FieldError fieldError : fieldErrorList) {
-			logger.error(String.format("字段名:%s,注入值:%s,提示信息:%s",fieldError.getField(),fieldError.getRejectedValue(),fieldError.getDefaultMessage()));
-		}
 	}
 	
 	/*
@@ -312,6 +341,19 @@ public class BaseController {
 	protected void setDomainName(String domainName) {
 		this.domainName = domainName;
 	}
+	
+	
+	/*
+	 * 扩展
+	 *------------------------------------------------------------------------------*/
+	
+	protected void traceBindingResult(BindingResult result) {
+		List<FieldError> fieldErrorList=result.getFieldErrors();
+		for (FieldError fieldError : fieldErrorList) {
+			logger.error(String.format("字段名: s%s , 注入值: %s , 提示信息: %s",fieldError.getField(),fieldError.getRejectedValue(),fieldError.getDefaultMessage()));
+		}
+	}
+
 	
 	/**
 	 * 切换连接符
