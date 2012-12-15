@@ -1,6 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%
 	String path = request.getContextPath();
+	String ctxPath = request.getContextPath() + "/";
 %>
 <!DOCTYPE html>
 <html lang="en">

@@ -8,12 +8,13 @@
 	<name>Macrontea Yunwu</name>
 	<description>Macrontea Yunwu App</description>
 	<url>http://maven.apache.org</url>
-	
+
 	<properties>
 		<spring.version>3.1.2.RELEASE</spring.version>
 	</properties>
-	<dependencies>
 	
+	<dependencies>
+
 		<!-- junit -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -21,7 +22,7 @@
 			<version>4.6</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -53,35 +54,35 @@
 			<artifactId>spring-test</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		
+
 		<!-- hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>3.6.10.Final</version>
 		</dependency>
-		
+
 		<!-- logback -->
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>1.0.7</version>
 		</dependency>
-		
+
 		<!-- mysql -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.18</version>
 		</dependency>
-		
+
 		<!-- servlet api -->
 		<dependency>
 			<groupId>org.apache.geronimo.specs</groupId>
 			<artifactId>geronimo-servlet_2.5_spec</artifactId>
 			<version>1.2</version>
 		</dependency>
-		
+
 		<!-- commons -->
 		<dependency>
 			<groupId>commons-pool</groupId>
@@ -95,7 +96,7 @@
 			<artifactId>commons-lang</artifactId>
 			<version>2.6</version>
 		</dependency>
-		
+
 		<!-- others -->
 		<dependency>
 			<groupId>aspectj</groupId>
@@ -123,7 +124,13 @@
 			<artifactId>guava</artifactId>
 			<version>13.0.1</version>
 		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>0.2.9</version>
+		</dependency>
             
+
 
 	</dependencies>
 	<build>

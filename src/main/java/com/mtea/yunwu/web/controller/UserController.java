@@ -356,7 +356,7 @@ public class UserController extends BaseController { // http://localhost:8080/yu
 
 	@ResponseBody
 	@RequestMapping("json/{id}")
-	public User userjson(@PathVariable("id") long id, Model model) {
+	public User json(@PathVariable("id") long id, Model model) {
 		return userService.getUserById(id);
 	}
 

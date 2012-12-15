@@ -75,16 +75,6 @@ public class BaseController {
 	 * URL 分隔符
 	 */
 	protected String urlSeparator = "/";
-	
-	/**
-	 * 500 错误视图路径
-	 */
-	protected String SERVER_ERROR_VIEW_PATH = isAdmin ? "/admin/publics/500" :"/publics/500";
-	
-	/**
-	 * 404 错误视图路径
-	 */
-	protected String RES_NOT_FOUND_VIEW_PATH = isAdmin ? "/admin/publics/404" :"/publics/404";
 
 	/**
 	 * 处理 500 错误
@@ -98,7 +88,19 @@ public class BaseController {
 		model.addAttribute("exceptionClazz", ClassUtils.getShortName(ex.getClass()));
 		model.addAttribute("exceptionMessage", ex.getMessage());
 		model.addAttribute("controllerClazz", ClassUtils.getShortName(getClass()));
-		return new ModelAndView(SERVER_ERROR_VIEW_PATH, model);
+		String serverErrorViewPath = getServerErrorViewPath();
+		logger.error("500 错误", ex);
+		return new ModelAndView(serverErrorViewPath, model);
+	}
+
+	/**
+	 * 500 视图路径
+	 * @author macrotea@qq.com
+	 * @date 2012-12-13 下午10:18:11
+	 * @return
+	 */
+	public String getServerErrorViewPath() {
+		return isAdmin ? "admin/publics/500" :"publics/500";
 	}
 	
 	/**
@@ -107,9 +109,19 @@ public class BaseController {
 	 * @return
 	 */
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
-	@ExceptionHandler(Exception.class)
-	public ModelAndView handleResNotFound(Exception ex) {
-		return new ModelAndView(RES_NOT_FOUND_VIEW_PATH);
+	public ModelAndView handleResNotFound() {
+		String resNotFoundViewPath = getResNotFoundViewPath();
+		return new ModelAndView(resNotFoundViewPath);
+	}
+
+	/**
+	 * 404  视图路径
+	 * @author macrotea@qq.com
+	 * @date 2012-12-13 下午10:18:11
+	 * @return
+	 */
+	public String getResNotFoundViewPath() {
+		return isAdmin ? "admin/publics/404" : "publics/404";
 	}
 	
 	/**
