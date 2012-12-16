@@ -2,141 +2,97 @@ package com.mtea.yunwu.dao;
 
 import java.util.List;
 
-import javax.sql.DataSource;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-
-import com.mtea.yunwu.dao.sql.SqlBuilder;
-import com.mtea.yunwu.dao.sql.WhereBuilder;
-import com.mtea.yunwu.model.core.BaseModel;
-import com.mtea.yunwu.model.ext.SqlParamBean;
-import com.mtea.yunwu.utils.ModelInspector;
-import com.mtea.yunwu.utils.Pager;
+import com.mtea.yunwu.dao.exception.DaoException;
 
 /**
+ * 父级数据访问接口
  * @author macrotea@qq.com
- * @date 2012-12-12 下午9:16:31
+ * @date 2012-12-17 上午12:47:55
  * @version 1.0
  * @note
  */
-public abstract class BaseDao<T extends BaseModel> {
-	
-	private Logger logger = LoggerFactory.getLogger(getClass());
-	
-	public abstract void initDataSource(DataSource dataSource);
-	
-	public abstract Class<T> getModelClass();
-	
-	private DataSource dataSource;
-	
-	private JdbcTemplate jdbcTemplate;
-
-	private ModelInspector modelInspector;
-	
-	private SqlBuilder sqlBuilder;
-
-	private SimpleJdbcInsert insertActor;
-	
-	private ParameterizedBeanPropertyRowMapper<T> mapper;
-	
-	private String tableName;
-	
-	public BaseDao() {
-		super();
-	}
-	
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		init();
-	}
-
-	public void init() {
-		jdbcTemplate=new JdbcTemplate(getDataSource());
-		this.mapper = ParameterizedBeanPropertyRowMapper.newInstance(getModelClass());
-		this.modelInspector = ModelInspector.forClazz(getModelClass());
-		this.sqlBuilder = SqlBuilder.use(this.modelInspector);
-		this.tableName = modelInspector.getTableName();
-		this.insertActor = new SimpleJdbcInsert(jdbcTemplate.getDataSource()).withTableName(modelInspector.getTableName()).usingColumns(modelInspector.getCommonColumns()).usingGeneratedKeyColumns(modelInspector.getPKColumn());
-	}
-	
-	/* 组件获取 */
-
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public JdbcTemplate getJdbcTemplate() {
-		return jdbcTemplate;
-	}
-
-	public SimpleJdbcInsert getInsertActor() {
-		return insertActor;
-	}
-
-	public ModelInspector getModelInspector() {
-		return modelInspector;
-	}
-
-	public SqlBuilder getSqlBuilder() {
-		return sqlBuilder;
-	}
-
-	public ParameterizedBeanPropertyRowMapper<T> getMapper() {
-		return mapper;
-	}
-
-	public String getTableName() {
-		return tableName;
-	}
+public interface BaseDao<T> {
 
 	/**
-	 * 查找分页数据模板方法
+	 * 保存
 	 * @author macrotea@qq.com
-	 * @date 2012-12-12 下午9:44:45
-	 * @param page
-	 * @param pageSize
-	 * @param whereBuilder
+	 * @date 2012-12-17 上午12:48:27
+	 * @param modelInstance
+	 * @return
 	 */
-	public Pager<T> findPageTemplate(int page, int pageSize, WhereBuilder whereBuilder) {
-		String countSql = sqlBuilder.toCountAllSql();
-		String querySql = sqlBuilder.toFindAllSql();
-		String limitSql = String.format(" LIMIT %s,%s", (page - 1) * pageSize, pageSize);
-		
-		/*
-		 * Where条件SQL及其参数 
-		 */
-		SqlParamBean sqlParamBean = whereBuilder.buildSqlParamBean();
-		String whereSql = sqlParamBean.getSql();
-		List<Object> paramList = sqlParamBean.getParamList();
-		Object[] args = paramList.toArray(new Object[paramList.size()]);
-		
-		//获得总行数
-		long rowCount = this.getJdbcTemplate().queryForLong(countSql + whereSql , args);
-		logger.debug("findPageTemplate() - rowCount : " + rowCount);
-		
-		//获得特定页数据
-		List<T> userList = getJdbcTemplate().query(querySql + whereSql + limitSql, getMapper(), args);
-		return new Pager<T>(userList, rowCount, page);
-	}
+	T save(T modelInstance) throws DaoException;
+
+	/**
+	 * 删除
+	 * @author macrotea@qq.com
+	 * @date 2012-12-17 上午12:48:48
+	 * @param id
+	 * @return
+	 */
+	long delete(long id) throws DaoException;
+
+	/**
+	 * 删除所有
+	 * @author macrotea@qq.com
+	 * @date 2012-12-17 上午12:48:52
+	 * @return
+	 */
+	long deleleAll() throws DaoException;
+
+	/**
+	 * 获得所有
+	 * @author macrotea@qq.com
+	 * @date 2012-12-17 上午12:49:01
+	 * @return
+	 */
+	List<T> findAll();
+
+	/**
+	 * 根据Id查找
+	 * @author macrotea@qq.com
+	 * @date 2012-12-17 上午12:49:17
+	 * @param id
+	 * @return
+	 */
+	T findById(long id);
+
+	/**
+	 * 计算总行数
+	 * @author macrotea@qq.com
+	 * @date 2012-12-17 上午12:49:32
+	 * @return
+	 */
+	Long countAll();
+	
+	/**
+	 * 根据SQL和数据Bean更新
+	 * @author macrotea@qq.com
+	 * @date 2012-12-17 上午1:06:11
+	 * @param user
+	 * @return
+	 * @throws DaoException
+	 */
+	long updateById(String sql, T databean) throws DaoException;
+
+	/**
+	 * 根据数据Bean更新
+	 * (内置更新SQL的构建)
+	 * @author macrotea@qq.com
+	 * @date 2012-12-17 上午1:12:28
+	 * @param databean
+	 * @return
+	 * @throws DaoException
+	 */
+	long updateById(T databean) throws DaoException;
+
+	/**
+	 * 根据命名参数更新
+	 * @author macrotea@qq.com
+	 * @date 2012-12-17 上午1:14:50
+	 * @param namedSql
+	 * @param databean
+	 * @return
+	 */
+	long updateByNamedParams(String namedSql, Object databean);
+
 }
-
-
-/**
-代码备份说明:
-1.
-//Bean中属性与列名映射,忽略大小写
-SqlParameterSource parameters = new BeanPropertySqlParameterSource(user);
-//插入且生成主键
-Number newId = getInsertActor().executeAndReturnKey(parameters);
-//更新对象中的Id值
-user.setId(newId.longValue());
-return user;
-
-2.
-
-
-**/

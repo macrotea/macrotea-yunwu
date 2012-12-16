@@ -30,8 +30,8 @@
     <!-- 根据提供的SQL文件,自动建表且插入测试数据 -->
     <!-- 
 	<jdbc:initialize-database data-source="dataSource">
-	  <jdbc:script location="db_yunwu_schema.sql"/>
-	  <jdbc:script location="db_yunwu_data.sql"/>
+		<jdbc:script location="db_yunwu_schema.sql"/>
+		<jdbc:script location="db_yunwu_data.sql"/>
 	</jdbc:initialize-database>
     -->
     
@@ -41,9 +41,4 @@
 	</bean>
 	-->
 	
-	<!--配置引入-->
-	<!--
-	<beans:import resource="dataSourceContext.xml" />
-	<beans:import resource="servletContext.xml" />
-	-->
 </beans>
