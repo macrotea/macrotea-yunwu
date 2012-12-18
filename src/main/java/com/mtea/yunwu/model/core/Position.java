@@ -3,6 +3,8 @@
  */
 package com.mtea.yunwu.model.core;
 
+import com.mtea.yunwu.model.base.BaseModel;
+
 
 /**
  * 职位

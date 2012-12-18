@@ -8,7 +8,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.mtea.yunwu.model.core.BaseModel;
+import com.mtea.yunwu.model.base.BaseModel;
 
 /**
  * 员工表

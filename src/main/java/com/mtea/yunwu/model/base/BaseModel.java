@@ -1,8 +1,9 @@
-package com.mtea.yunwu.model.core;
+package com.mtea.yunwu.model.base;
 
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
@@ -32,8 +33,9 @@ public class BaseModel implements Serializable{
 	
 	private Date editTime;
 	
+	@Column(columnDefinition = "varchar(255) default '暂无备注'")
 	private String remark;
-	
+
 	/**
 	 * order 是MySQL关键字
 	 */
@@ -81,6 +83,42 @@ public class BaseModel implements Serializable{
 
 	public void setOrderValue(Double orderValue) {
 		this.orderValue = orderValue;
+	}
+	
+	/**
+	 * 刷新添加或者编辑时间
+	 * 
+	 * @author liangqiye / 2012-12-18 上午10:47:29
+	 */
+    public void refreshAddOrEditTime() {
+    	Date now = new Date();
+        if (getId() == null) {
+            this.setAddTime(now);
+            this.setEditTime(now);
+        } else {
+        	this.setEditTime(now);
+        }
+    }
+	
+	/**
+	 * 设置添加和编辑时间为当前日期
+	 * @author macrotea@qq.com
+	 * @date 2012-12-2 下午8:50:48
+	 */
+	public void fromNow(){
+		Date now =new Date();
+		setAddTime(now);
+		setEditTime(now);
+	}
+	
+	/**
+	 * 刷新编辑时间
+	 * @author macrotea@qq.com
+	 * @date 2012-12-2 下午8:50:48
+	 */
+	public void touchMe(){
+		Date now =new Date();
+		setEditTime(now);
 	}
 	
 }

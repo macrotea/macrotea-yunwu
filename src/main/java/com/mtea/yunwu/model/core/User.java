@@ -1,7 +1,8 @@
 package com.mtea.yunwu.model.core;
 
 import java.io.Serializable;
-import java.util.Date;
+
+import com.mtea.yunwu.model.base.BaseModel;
 
 /**
  * 用户表
@@ -79,26 +80,15 @@ public class User extends BaseModel implements Serializable {
 		setAdmin(true);
 		return this;
 	}
-	
-	/**
-	 * 设置添加和编辑时间为当前日期
-	 * @author macrotea@qq.com
-	 * @date 2012-12-2 下午8:50:48
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
 	 */
-	public void fromNow(){
-		Date now =new Date();
-		setAddTime(now);
-		setEditTime(now);
+	@Override
+	public String toString() {
+		return "User [username=" + username + ", password=" + password + ", email=" + email + ", admin=" + admin + ", enable=" + enable + ", getId()=" + getId() + ", getAddTime()=" + getAddTime()
+				+ ", getRemark()=" + getRemark() + ", getEditTime()=" + getEditTime() + ", getOrderValue()=" + getOrderValue() + "]";
 	}
-	
-	/**
-	 * 刷新编辑时间
-	 * @author macrotea@qq.com
-	 * @date 2012-12-2 下午8:50:48
-	 */
-	public void touchMe(){
-		Date now =new Date();
-		setEditTime(now);
-	}
+
 	
 }

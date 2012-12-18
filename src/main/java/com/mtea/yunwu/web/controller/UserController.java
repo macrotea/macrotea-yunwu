@@ -105,9 +105,6 @@ public class UserController extends BaseController { // http://localhost:8080/yu
 		if (result.hasErrors())
 			traceBindingResult(result);
 		
-		//设置时间
-		user.fromNow();
-		
 		//新增
 		User retVal = userService.addUser(user);
 		
@@ -158,7 +155,6 @@ public class UserController extends BaseController { // http://localhost:8080/yu
 
 		//保存Id
 		user.setId(id);
-		user.touchMe();
 		
 		long retVal = userService.updateUserById(user);
 		

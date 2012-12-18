@@ -2,6 +2,8 @@ package com.mtea.yunwu.model.core;
 
 import java.io.Serializable;
 
+import com.mtea.yunwu.model.base.BaseModel;
+
 /**
  * 员工表
  * 

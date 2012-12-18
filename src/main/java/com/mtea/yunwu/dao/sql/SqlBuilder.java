@@ -7,9 +7,11 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
 import com.mtea.yunwu.global.Constants;
-import com.mtea.yunwu.model.core.BaseModel;
+import com.mtea.yunwu.model.base.BaseModel;
 import com.mtea.yunwu.model.ext.SqlArgsBean;
 import com.mtea.yunwu.utils.ModelInspector;
 import com.mtea.yunwu.utils.ReflectUtils;
@@ -160,6 +162,31 @@ public class SqlBuilder {
 		builder.append(Constants.BLANK).append("WHERE").append(Constants.BLANK).append(modelInspector.getPKColumn()).append("=:").append(modelInspector.getPKColumn());
 		
 		return builder.toString();
+	}
+	
+	
+	/**
+	 * <pre>
+	 * 构建SQL参数及参数值的映射
+	 * 用法:
+	 * SqlParameterSource paramSource = buildSqlParamsMapping("code", code,"version", version);
+	 * </pre>
+	 * @param params
+	 * @return
+	 * @author liangqiye / 2012-12-18 上午9:59:33
+	 */
+	public SqlParameterSource buildSqlParamsMapping(Object... params) {
+		if (params == null || params.length == 0) {
+			return null;
+		}
+		MapSqlParameterSource paramSource = new MapSqlParameterSource();
+		
+		//注意跳跃 : i += 2
+		for (int i = 0; i < params.length; i += 2) {
+			paramSource.addValue((String) params[i], params[i + 1]);
+		}
+		
+		return paramSource;
 	}
 
 }

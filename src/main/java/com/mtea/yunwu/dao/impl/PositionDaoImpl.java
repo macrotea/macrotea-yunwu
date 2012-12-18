@@ -4,9 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import com.mtea.yunwu.dao.DeptDao;
+import com.mtea.yunwu.dao.PositionDao;
 import com.mtea.yunwu.dao.sql.WhereBuilder;
-import com.mtea.yunwu.model.core.Dept;
+import com.mtea.yunwu.model.core.Position;
 import com.mtea.yunwu.model.ext.SqlParamBean;
 import com.mtea.yunwu.utils.Pager;
 
@@ -18,23 +18,23 @@ import com.mtea.yunwu.utils.Pager;
  * @note
  */
 @Repository
-public class PositionDaoImpl extends BaseDaoImpl<Dept> implements DeptDao {
+public class PositionDaoImpl extends BaseDaoImpl<Position> implements PositionDao {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	/* (non-Javadoc)
-	 * @see com.mtea.yunwu.dao.DeptDao#findPage(int, com.mtea.yunwu.model.core.Dept)
+	 * @see com.mtea.yunwu.dao.PositionDao#findPage(int, com.mtea.yunwu.model.core.Position)
 	 */
 	@Override
-	public Pager<Dept> findPage(int page, final Dept criteriaDept) {
-		return this.findPage(page, Pager.DEFAULT_PAGE_SIZE, criteriaDept);
+	public Pager<Position> findPage(int page, final Position criteriaPosition) {
+		return this.findPage(page, Pager.DEFAULT_PAGE_SIZE, criteriaPosition);
 	}
 
 	/* (non-Javadoc)
-	 * @see com.mtea.yunwu.dao.DeptDao#findPage(int, int, com.mtea.yunwu.model.core.Dept)
+	 * @see com.mtea.yunwu.dao.PositionDao#findPage(int, int, com.mtea.yunwu.model.core.Position)
 	 */
 	@Override
-	public Pager<Dept> findPage(int page, int pageSize, final Dept criteria) {
+	public Pager<Position> findPage(int page, int pageSize, final Position criteria) {
 		
 		logger.debug("{}Dao - findPage() - 分页查询条件信息: {} ", getModelClass().getSimpleName(), criteria);
 		
@@ -53,8 +53,8 @@ public class PositionDaoImpl extends BaseDaoImpl<Dept> implements DeptDao {
 	 *-------------------------------------------*/
 
 	@Override
-	public Class<Dept> getModelClass() {
-		return Dept.class;
+	public Class<Position> getModelClass() {
+		return Position.class;
 	}
 	
 }

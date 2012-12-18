@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import com.mtea.yunwu.dao.BaseDao;
 import com.mtea.yunwu.dao.DaoComponent;
 import com.mtea.yunwu.dao.sql.WhereBuilder;
-import com.mtea.yunwu.model.core.BaseModel;
+import com.mtea.yunwu.model.base.BaseModel;
 import com.mtea.yunwu.model.ext.SqlParamBean;
 import com.mtea.yunwu.utils.Pager;
 

@@ -2,6 +2,7 @@ package com.mtea.yunwu.service.impl;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,7 @@ public class UserServiceImpl implements UserService{
 	 * @see com.mtea.yunwu.service.UserService#addUser(com.mtea.yunwu.model.core.User)
 	 */
 	public User addUser(User user) {
+		user.refreshAddOrEditTime();
 		return userDao.save(user);
 	}
 
@@ -70,7 +72,8 @@ public class UserServiceImpl implements UserService{
 	 */
 	public long updateUserById(User user) {
 		User oriUser = getUserById(user.getId());
-		user.setAddTime(oriUser.getAddTime());
+		BeanUtils.copyProperties(oriUser, user);
+		user.refreshAddOrEditTime();
 		return userDao.updateById(user);
 	}
 

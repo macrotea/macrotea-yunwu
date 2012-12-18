@@ -88,11 +88,13 @@ public class UserDaoTest extends AbstractTestCase {
 		userDao.save(u);
 
 		User result = userDao.findById(u.getId());
-		result.setUsername("XX");
+		result.setUsername("username-XXXXXXX");
+		result.setRemark("remark-XXXXXXX");
 		userDao.updateById(result);
 
 		User result2 = userDao.findById(u.getId());
-		Assert.assertTrue(result2.getUsername().equals("XX"));
+		System.out.println("updateById - user - toString() : "+ result2.toString());
+		Assert.assertTrue(result2.getUsername().equals("username-XXXXXXX"));
 	}
 	
 	@Test

@@ -5,10 +5,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import com.mtea.yunwu.model.core.BaseModel;
+import com.mtea.yunwu.model.base.BaseModel;
 
 /**
  * 部门表
@@ -27,7 +29,8 @@ public class Dept extends BaseModel implements Serializable {
 	
 	private Double orderValue;
 	
-	@ManyToMany
+	@ManyToMany(targetEntity = Position.class)
+	@JoinTable(name = "tb_dept_position", joinColumns = @JoinColumn(name = "deptId"), inverseJoinColumns = @JoinColumn(name = "positionId"))
 	private Set<Position> positionSet = new HashSet<Position>();
 	
 	public String getDeptName() {
@@ -44,6 +47,22 @@ public class Dept extends BaseModel implements Serializable {
 
 	public void setOrderValue(Double orderValue) {
 		this.orderValue = orderValue;
+	}
+
+	/**
+	 * 获得 positionSet
+	 * @return 
+	 */
+	public Set<Position> getPositionSet() {
+		return positionSet;
+	}
+
+	/**
+	 * 设置 positionSet
+	 * @param positionSet
+	 */
+	public void setPositionSet(Set<Position> positionSet) {
+		this.positionSet = positionSet;
 	}
 	
 }

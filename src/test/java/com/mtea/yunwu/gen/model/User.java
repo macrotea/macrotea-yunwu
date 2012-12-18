@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.mtea.yunwu.model.core.BaseModel;
+import com.mtea.yunwu.model.base.BaseModel;
 
 /**
  * 用户表

@@ -3,28 +3,30 @@
  */
 package com.mtea.yunwu.gen.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import com.mtea.yunwu.model.core.BaseModel;
+import com.mtea.yunwu.model.base.BaseModel;
 
 /**
  * 职位
+ * 
  * @author liangqiye@gz.iscas.ac.cn
  * @version 1.0 , 2012-12-17 下午4:01:37
  */
 @Entity
-@Table(name="tb_position")
+@Table(name = "tb_position")
 public class Position extends BaseModel {
 	private static final long serialVersionUID = 1L;
 
 	private String name;
-	
-	@ManyToOne(targetEntity=Dept.class)
-	@JoinColumn(name="deptId")
-	private Dept dept;
+
+	@ManyToMany(targetEntity = Dept.class, mappedBy = "positionSet")
+	private Set<Dept> deptSet = new HashSet<Dept>();
 
 	public String getName() {
 		return name;
@@ -33,15 +35,22 @@ public class Position extends BaseModel {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	public Dept getDept() {
-		return dept;
+
+	/**
+	 * 获得 deptSet
+	 * @return 
+	 */
+	public Set<Dept> getDeptSet() {
+		return deptSet;
 	}
 
-	public void setDept(Dept dept) {
-		this.dept = dept;
+	/**
+	 * 设置 deptSet
+	 * @param deptSet
+	 */
+	public void setDeptSet(Set<Dept> deptSet) {
+		this.deptSet = deptSet;
 	}
-	
 	
 
 }
