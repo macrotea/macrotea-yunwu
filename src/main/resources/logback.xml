@@ -15,7 +15,6 @@
 	<logger name="jdbc.sqlonly" level="OFF"/>
 	<logger name="jdbc.connection" level="OFF"/>
 	
-	
 	<!-- druid -->
 	<logger name="druid.sql.DataSource" level="INFO"/>
 	<logger name="druid.sql.Connection" level="INFO"/>

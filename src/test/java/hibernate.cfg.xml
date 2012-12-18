@@ -24,6 +24,7 @@
 		<mapping class="com.mtea.yunwu.gen.model.User" />
 		<mapping class="com.mtea.yunwu.gen.model.Dept" />
 		<mapping class="com.mtea.yunwu.gen.model.Employee" />
+		<mapping class="com.mtea.yunwu.gen.model.Position" />
 	</session-factory>
 
 </hibernate-configuration>

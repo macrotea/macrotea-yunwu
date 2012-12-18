@@ -2,8 +2,6 @@ package com.mtea.yunwu.dao;
 
 import java.util.List;
 
-import com.mtea.yunwu.dao.exception.DaoException;
-
 /**
  * 父级数据访问接口
  * @author macrotea@qq.com
@@ -20,7 +18,7 @@ public interface BaseDao<T> {
 	 * @param modelInstance
 	 * @return
 	 */
-	T save(T modelInstance) throws DaoException;
+	T save(T modelInstance);
 
 	/**
 	 * 删除
@@ -29,7 +27,7 @@ public interface BaseDao<T> {
 	 * @param id
 	 * @return
 	 */
-	long delete(long id) throws DaoException;
+	long delete(long id);
 
 	/**
 	 * 删除所有
@@ -37,7 +35,7 @@ public interface BaseDao<T> {
 	 * @date 2012-12-17 上午12:48:52
 	 * @return
 	 */
-	long deleleAll() throws DaoException;
+	long deleleAll();
 
 	/**
 	 * 获得所有
@@ -72,7 +70,7 @@ public interface BaseDao<T> {
 	 * @return
 	 * @throws DaoException
 	 */
-	long updateById(String sql, T databean) throws DaoException;
+	long updateById(String sql, T databean);
 
 	/**
 	 * 根据数据Bean更新
@@ -83,7 +81,7 @@ public interface BaseDao<T> {
 	 * @return
 	 * @throws DaoException
 	 */
-	long updateById(T databean) throws DaoException;
+	long updateById(T databean);
 
 	/**
 	 * 根据命名参数更新

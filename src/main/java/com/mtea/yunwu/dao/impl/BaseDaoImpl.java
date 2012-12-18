@@ -9,7 +9,6 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
 import com.mtea.yunwu.dao.BaseDao;
 import com.mtea.yunwu.dao.DaoComponent;
-import com.mtea.yunwu.dao.exception.DaoException;
 import com.mtea.yunwu.dao.sql.WhereBuilder;
 import com.mtea.yunwu.model.core.BaseModel;
 import com.mtea.yunwu.model.ext.SqlParamBean;
@@ -97,17 +96,17 @@ public abstract class BaseDaoImpl<T extends BaseModel> extends DaoComponent<T> i
 	}
 	
 	@Override
-	public long updateById(String sql, T databean) throws DaoException{
+	public long updateById(String sql, T databean){
 		return updateByNamedParams(sql,databean);
 	}
 	
 	@Override
-	public long updateById(T databean) throws DaoException{
+	public long updateById(T databean){
 		return updateById(getSqlBuilder().toUpdateByIdSql(),databean);
 	}
 	
 	@Override
-	public long updateByNamedParams(String namedSql, Object databean) throws DaoException{
+	public long updateByNamedParams(String namedSql, Object databean){
 		SqlParameterSource paramSource = new BeanPropertySqlParameterSource(databean);
 		return this.getNamedParameterJdbcTemplate().update(namedSql,paramSource);
 	}

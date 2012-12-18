@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mtea.yunwu.dao.UserDao;
-import com.mtea.yunwu.dao.exception.DaoException;
 import com.mtea.yunwu.model.core.User;
 import com.mtea.yunwu.service.UserService;
 import com.mtea.yunwu.utils.Pager;
@@ -69,8 +68,8 @@ public class UserServiceImpl implements UserService{
 	/* (non-Javadoc)
 	 * @see com.mtea.yunwu.service.UserService#updateUserById(com.mtea.yunwu.model.core.User)
 	 */
-	public long updateUserById(User user) throws DaoException {
-		User oriUser=getUserById(user.getId());
+	public long updateUserById(User user) {
+		User oriUser = getUserById(user.getId());
 		user.setAddTime(oriUser.getAddTime());
 		return userDao.updateById(user);
 	}

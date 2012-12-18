@@ -14,8 +14,6 @@ public class Dept extends BaseModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String deptName;
-	
-	private Double orderValue;
 
 	public String getDeptName() {
 		return deptName;
@@ -23,14 +21,6 @@ public class Dept extends BaseModel implements Serializable {
 
 	public void setDeptName(String deptName) {
 		this.deptName = deptName;
-	}
-
-	public Double getOrderValue() {
-		return orderValue;
-	}
-
-	public void setOrderValue(Double orderValue) {
-		this.orderValue = orderValue;
 	}
 
 }

@@ -35,6 +35,9 @@ public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
 	 */
 	@Override
 	public Pager<User> findPage(int page, int pageSize, final User criteria) {
+		
+		logger.debug("{}Dao - findPage() - 分页查询条件信息: {} ", getModelClass().getSimpleName(), criteria);
+		
 		return super.findPageTemplate(page, pageSize, new WhereBuilder() {
 
 			@Override

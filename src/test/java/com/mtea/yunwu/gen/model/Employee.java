@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.mtea.yunwu.model.core.BaseModel;
@@ -27,8 +28,10 @@ public class Employee extends BaseModel implements Serializable {
 	private Integer age;
 	
 	private Integer gender;
-	
-	private String phoneNumber;
+
+	private String mobilePhoneNumber;
+
+	private String officePhoneNumber;
 	
 	private String email;
 	
@@ -39,6 +42,10 @@ public class Employee extends BaseModel implements Serializable {
 	@ManyToOne(targetEntity=Dept.class)
 	@JoinColumn(name="deptId")
 	private Dept dept;
+	
+	@OneToOne(targetEntity=Position.class)
+	@JoinColumn(name="positionId")
+	private Position position;
 
 	public Integer getAge() {
 		return age;
@@ -62,14 +69,6 @@ public class Employee extends BaseModel implements Serializable {
 
 	public void setDept(Dept dept) {
 		this.dept = dept;
-	}
-
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-	
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
 	}
 
 	public String getPinyinShort() {
@@ -103,5 +102,30 @@ public class Employee extends BaseModel implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public String getMobilePhoneNumber() {
+		return mobilePhoneNumber;
+	}
+
+	public void setMobilePhoneNumber(String mobilePhoneNumber) {
+		this.mobilePhoneNumber = mobilePhoneNumber;
+	}
+
+	public String getOfficePhoneNumber() {
+		return officePhoneNumber;
+	}
+
+	public void setOfficePhoneNumber(String officePhoneNumber) {
+		this.officePhoneNumber = officePhoneNumber;
+	}
+
+	public Position getPosition() {
+		return position;
+	}
+
+	public void setPosition(Position position) {
+		this.position = position;
+	}
+	
 	
 }

@@ -2,7 +2,6 @@ package com.mtea.yunwu.service;
 
 import java.util.List;
 
-import com.mtea.yunwu.dao.exception.DaoException;
 import com.mtea.yunwu.model.core.User;
 import com.mtea.yunwu.utils.Pager;
 
@@ -64,16 +63,16 @@ public interface UserService {
 	 * macrotea / 2012-11-29 下午5:14:46
 	 * @throws DaoException 
 	 */
-	long updateUserById(User user) throws DaoException;
+	long updateUserById(User user);
 
 	/**
 	 * 搜索分页数据
 	 * @author macrotea@qq.com
 	 * @date 2012-12-10 下午11:38:19
 	 * @param i
-	 * @param user
+	 * @param userCriteria
 	 * @return
 	 */
-	Pager<User> searchPage(int page, User user);
+	Pager<User> searchPage(int page, User userCriteria);
 
 }

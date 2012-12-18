@@ -22,6 +22,7 @@ public class BaseModel implements Serializable{
 	public static final String ADDTIME = "addTime";
 	public static final String EDITTIME = "editTime";
 	public static final String REMARK = "remark";
+	public static final String ORDERVALUE = "orderValue";
 
 	@Id
 	@GeneratedValue
@@ -32,6 +33,11 @@ public class BaseModel implements Serializable{
 	private Date editTime;
 	
 	private String remark;
+	
+	/**
+	 * order 是MySQL关键字
+	 */
+	private Double orderValue;
 	
 	public BaseModel() {
 		super();
@@ -67,6 +73,14 @@ public class BaseModel implements Serializable{
 
 	public void setEditTime(Date editTime) {
 		this.editTime = editTime;
+	}
+
+	public Double getOrderValue() {
+		return orderValue;
+	}
+
+	public void setOrderValue(Double orderValue) {
+		this.orderValue = orderValue;
 	}
 	
 }

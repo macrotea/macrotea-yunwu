@@ -3,6 +3,7 @@
  */
 package com.mtea.yunwu.model.ext;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -10,8 +11,9 @@ import java.util.List;
  * @author 	liangqiye@gz.iscas.ac.cn
  * @version 1.0 , 2012-12-12 上午10:24:01	
  */
-public class SqlParamBean {
-	
+public class SqlParamBean implements Serializable{
+	private static final long serialVersionUID = 1L;
+
 	private String sql;
 	
 	private List<Object> paramList;

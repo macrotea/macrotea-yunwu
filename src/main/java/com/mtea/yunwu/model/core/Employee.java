@@ -19,15 +19,19 @@ public class Employee extends BaseModel implements Serializable {
 
 	private Integer gender;
 
-	private String phoneNumber;
+	private String mobilePhoneNumber;
+
+	private String officePhoneNumber;
 
 	private String email;
-	
+
 	private String pinyinShort;
-	
+
 	private String aliasName;
 
 	private Long deptId;
+	
+	private Long positionId;
 
 	public Integer getAge() {
 		return age;
@@ -43,14 +47,6 @@ public class Employee extends BaseModel implements Serializable {
 
 	public void setGender(Integer gender) {
 		this.gender = gender;
-	}
-
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
 	}
 
 	public Long getDeptId() {
@@ -84,7 +80,6 @@ public class Employee extends BaseModel implements Serializable {
 	public void setRealName(String realName) {
 		this.realName = realName;
 	}
-	
 
 	public String getEmail() {
 		return email;
@@ -94,10 +89,28 @@ public class Employee extends BaseModel implements Serializable {
 		this.email = email;
 	}
 
-	@Override
-	public String toString() {
-		return "Employee [realName=" + realName + ", age=" + age + ", gender=" + gender + ", phoneNumber=" + phoneNumber + ", email=" + email + ", pinyinShort=" + pinyinShort + ", aliasName="
-				+ aliasName + ", deptId=" + deptId + "]";
+	public String getMobilePhoneNumber() {
+		return mobilePhoneNumber;
+	}
+
+	public void setMobilePhoneNumber(String mobilePhoneNumber) {
+		this.mobilePhoneNumber = mobilePhoneNumber;
+	}
+
+	public String getOfficePhoneNumber() {
+		return officePhoneNumber;
+	}
+
+	public void setOfficePhoneNumber(String officePhoneNumber) {
+		this.officePhoneNumber = officePhoneNumber;
+	}
+
+	public Long getPositionId() {
+		return positionId;
+	}
+
+	public void setPositionId(Long positionId) {
+		this.positionId = positionId;
 	}
 
 }

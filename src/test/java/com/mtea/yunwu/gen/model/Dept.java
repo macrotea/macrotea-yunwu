@@ -1,8 +1,11 @@
 package com.mtea.yunwu.gen.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.mtea.yunwu.model.core.BaseModel;
@@ -23,7 +26,10 @@ public class Dept extends BaseModel implements Serializable {
 	private String deptName;
 	
 	private Double orderValue;
-
+	
+	@ManyToMany
+	private Set<Position> positionSet = new HashSet<Position>();
+	
 	public String getDeptName() {
 		return deptName;
 	}

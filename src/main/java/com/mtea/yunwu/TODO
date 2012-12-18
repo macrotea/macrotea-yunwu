@@ -9,3 +9,9 @@
 5.配置druid
 
 6.配置Selenium,希望jetty:run运行完毕后自动打开主页且登录
+
+7.各个model的增删改查
+
+8.excel文件的同步程序
+
+9.appcan的开发

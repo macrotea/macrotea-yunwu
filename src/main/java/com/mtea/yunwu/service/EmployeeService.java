@@ -2,8 +2,8 @@ package com.mtea.yunwu.service;
 
 import java.util.List;
 
-import com.mtea.yunwu.dao.exception.DaoException;
 import com.mtea.yunwu.model.core.Employee;
+import com.mtea.yunwu.utils.Pager;
 
 /**
  * 员工服务接口
@@ -63,6 +63,16 @@ public interface EmployeeService {
 	 * macrotea / 2012-11-29 下午5:14:46
 	 * @throws DaoException 
 	 */
-	long updateEmployeeById(Employee employee) throws DaoException;
+	long updateEmployeeById(Employee employee);
+	
+	/**
+	 * 搜索分页数据
+	 * @author macrotea@qq.com
+	 * @date 2012-12-10 下午11:38:19
+	 * @param i
+	 * @param employeeCriteria
+	 * @return
+	 */
+	Pager<Employee> searchPage(int page, Employee employeeCriteria);
 
 }
